@@ -1,0 +1,27 @@
+{% comment %}
+  Renders CTA button.
+  Usage: {% render button-cta, text: text, link: link, classes: class1,class2,class3, title: title, type: type %}
+
+{% endcomment %}
+
+{% liquid
+  assign text = text | default: 'Button text'
+  assign link = link | default: '#'
+  assign classes_raw = classes
+  assign extra_classes = classes_raw | replace: ',', ' '
+  assign title = title | default: 'link'
+  assign type = type | default: 'anchor'
+%}
+
+{% if type == "button" %}
+  <button class="custom-cta {{ extra_classes }}" title="{{ title }}">
+    {{- text }}
+    {{- 'by-arrow-right.svg' | inline_asset_content -}}
+  </button>
+{% else %}
+<a class="custom-cta {{ extra_classes }}" href="{{ link }}" title="{{ title }}">
+  {{- text }}
+  {{- 'by-arrow-right.svg' | inline_asset_content -}}
+</a>
+
+{% endif %}
