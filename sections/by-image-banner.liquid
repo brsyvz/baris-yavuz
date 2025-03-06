@@ -1,0 +1,248 @@
+{{ 'by-image-banner.css' | asset_url | preload_tag: as: 'style' }}
+{{ 'by-image-banner.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign loading = 'eager'
+  assign fetchpriority = 'high'
+
+  if section.index > 1
+    assign loading = 'lazy'
+    assign fetchpriority = 'low'
+  endif
+%}
+
+{% liquid
+  assign ss = section.settings
+  assign header_logo = ss.header_logo
+  assign header_promotion_text = ss.header_promotion_text
+  assign header_cta_text = ss.header_cta_text
+  assign header_cta_link = ss.header_cta_link
+
+  assign desktop_image = ss.desktop_image
+  assign mobile_image = ss.mobile_image
+  assign title = ss.title
+  assign description = ss.description
+  assign cta_text = ss.cta_text
+  assign cta_link = ss.cta_link
+  assign footer_promotion_text = ss.footer_promotion_text
+
+  assign padding_top_mobile = ss.padding_top_mobile
+  assign padding_bottom_mobile = ss.padding_bottom_mobile
+
+  assign padding_top_desktop = ss.padding_top_desktop
+  assign padding_bottom_desktop = ss.padding_bottom_desktop
+%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ padding_top_mobile }}px;
+    padding-bottom: {{ padding_bottom_mobile }}px;
+  }
+  @media (min-width: 960px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ padding_top_desktop }}px;
+      padding-bottom: {{ padding_bottom_desktop }}px;
+    }
+  }
+{%- endstyle -%}
+
+
+<div class="section-{{ section.id }}-padding color-{{ section.settings.color_scheme }} resetter">
+  <header class="banner-header__wrapper">
+    <div class="banner-header__mobile-drawer">
+      <span class="drawer">{{- 'by-icon-menu-drawer.svg' | inline_asset_content -}}</span>
+      <span class="drawer-close">{{- 'by-icon-close.svg' | inline_asset_content -}}</span>
+
+      <div class="banner-header__logo">
+        {{ header_logo | image_url: width: 151 | image_tag: loading: loading, fetchpriority: fetchpriority, alt: header_logo.alt }}
+      </div>
+
+    </div>
+    <div class="banner-header__content">
+      <p class="description">{{ header_promotion_text }}</p>
+      {% render "by-cta"
+        , text: header_cta_text
+        , link: header_cta_link
+        , classes: "secondary"
+        , title: header_promotion_text %}
+    </div>
+  </header>
+
+  <div class="banner-content-desktop">
+    {% if desktop_image %}
+      {{ desktop_image | image_url: width: 2880 | image_tag: loading: loading, fetchpriority: fetchpriority, alt: desktop_image.alt }}
+    {% else %}
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'banner-placeholder' }}
+    {% endif %}
+  </div>
+
+  <div class="banner-hero-content">
+    <div class="text-wrapper">
+      <h2>
+        {{ title }}
+      </h2>
+      <div>{{ description }}</div>
+      {% render "by-cta"
+        , text: cta_text
+        , link: cta_link
+        , classes: "primary"
+        , title: cta_text %}
+    </div>
+    <div class="img-wrapper">
+      {% if desktop_image %}
+        {{ desktop_image | image_url: width: 2880 | image_tag: loading: loading, fetchpriority: fetchpriority, alt: desktop_image.alt }}
+      {% else %}
+        {{ 'lifestyle-2' | placeholder_svg_tag: 'banner-placeholder' }}
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="banner-content-mobile">
+    {% if mobile_images %}
+      {{ mobile_image | image_url: width: 700 | image_tag: loading: loading, fetchpriority: fetchpriority, alt: mobile_image.alt }}
+    {% else %}
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'banner-placeholder' }}
+    {% endif %}
+    {% render "by-cta"
+      , text: cta_text
+      , link: cta_link
+      , classes: "primary"
+      , title: cta_text %}
+  </div>
+
+  <div class="footer-text">
+    {{ footer_promotion_text }}
+  </div>
+
+</div>
+
+<script src="{{ 'by-image-banner.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+  {
+    "name": "t:sections.custom-image-banner.name",
+    "tag": "section",
+    "class": "custom-banner-section",
+    "disabled_on": {
+      "groups": ["header", "footer"]
+    },
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "header_logo",
+        "label": "t:sections.custom-image-banner.settings.header_logo.label"
+      },
+      {
+        "type": "inline_richtext",
+        "id": "header_promotion_text",
+        "label": "t:sections.custom-image-banner.settings.header_promotion_text.label",
+        "default": "Find the ideal gift for your loved ones."
+      },
+      {
+        "type": "text",
+        "id": "header_cta_text",
+        "label": "t:sections.custom-image-banner.settings.header_cta_text.label",
+        "default": "choose gift"
+      },
+      {
+        "type": "url",
+        "id": "header_cta_link",
+        "label": "t:sections.custom-image-banner.settings.header_cta_link.label"
+      }, {
+        "type": "image_picker",
+        "id": "desktop_image",
+        "label": "t:sections.custom-image-banner.settings.desktop_image.label"
+      }, {
+        "type": "image_picker",
+        "id": "mobile_image",
+        "label": "t:sections.custom-image-banner.settings.mobile_image.label"
+      }, {
+        "type": "inline_richtext",
+        "id": "title",
+        "default": "The Gift Guide",
+        "label": "t:sections.custom-image-banner.settings.title.label"
+      }, {
+        "type": "richtext",
+        "id": "description",
+        "default": "<p>Discover Joy: Your Ultimate Holiday Gift Destination.</p> <p>Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>",
+        "label": "t:sections.custom-image-banner.settings.description.label"
+      }, {
+        "type": "text",
+        "id": "cta_text",
+        "default": "shop now",
+        "label": "t:sections.custom-image-banner.settings.cta_text.label"
+      }, {
+        "type": "url",
+        "id": "cta_link",
+        "label": "t:sections.custom-image-banner.settings.cta_link.label"
+      }, {
+        "type": "richtext",
+        "id": "footer_promotion_text",
+        "label": "t:sections.custom-image-banner.settings.footer_promotion_text.label",
+        "default": "<p>SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL</p>"
+      }, {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "t:sections.all.colors.label",
+        "default": "scheme-1"
+      }, {
+        "type": "range",
+        "id": "padding_top_mobile",
+        "min": 0,
+        "max": 220,
+        "step": 4,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_top_mobile",
+        "default": 0
+      }, {
+        "type": "range",
+        "id": "padding_bottom_mobile",
+        "min": 0,
+        "max": 220,
+        "step": 4,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_bottom_mobile",
+        "default": 0
+      }, {
+        "type": "range",
+        "id": "padding_top_desktop",
+        "min": 0,
+        "max": 220,
+        "step": 4,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_top_desktop",
+        "default": 0
+      }, {
+        "type": "range",
+        "id": "padding_bottom_desktop",
+        "min": 0,
+        "max": 220,
+        "step": 4,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_bottom_desktop",
+        "default": 0
+      }
+    ],
+    "presets": [
+      {
+        "name": "t:sections.custom-image-banner.presets.name",
+        "category": "Banner",
+        "settings": {
+          "header_logo": "shopify://shop_images/image-banner-logo.png",
+          "header_promotion_text": "Find the ideal gift for your loved ones.",
+          "header_cta_text": "Choose Gift",
+          "title": "The Gift Guide",
+          "description": "<p>Discover Joy: Your Ultimate Holiday Gift Destination.</p> <p>Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>",
+          "cta_text": "Shop Now",
+          "footer_promotion_text": "<p>SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL</p>",
+          "color_scheme": "scheme-1",
+          "padding_top_mobile": 0,
+          "padding_bottom_mobile": 0,
+          "padding_top_desktop": 0,
+          "padding_bottom_desktop": 0
+        }
+
+      }
+    ]
+  }
+{% endschema %}

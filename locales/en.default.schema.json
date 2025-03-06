@@ -393,7 +393,11 @@
       "padding": {
         "section_padding_heading": "Section padding",
         "padding_top": "Top padding",
-        "padding_bottom": "Bottom padding"
+        "padding_bottom": "Bottom padding",
+        "padding_top_desktop": "Desktop top padding",
+        "padding_bottom_desktop": "Desktop bottom padding",
+        "padding_top_mobile": "Mobile top padding",
+        "padding_bottom_mobile": "Mobile bottom padding"
       },
       "spacing": "Spacing",
       "colors": {
@@ -1186,6 +1190,79 @@
         }
       }
     },
+
+    "custom-image-banner": {
+      "name": "By Image Banner",
+      "settings": {
+        "header_logo": {
+          "label": "Header Logo"
+        },
+        "header_promotion_text": {
+          "label": "Header Promotion Text"
+        },
+        "header_cta_text": {
+          "label": "Header CTA Text"
+        },
+        "header_cta_link": {
+          "label": "Header CTA Link"
+        },
+        "desktop_image": {
+          "label": "Desktop Image"
+        },
+        "mobile_image": {
+          "label": "Mobile Image"
+        },
+        "title": {
+          "label": "Title"
+        },
+        "description": {
+          "label": "Description"
+        },
+        "cta_text": {
+          "label": "CTA Text"
+        },
+        "cta_link": {
+          "label": "CTA Link"
+        },
+        "footer_promotion_text": {
+          "label": "Footer Promotion Text"
+        },
+        "color_scheme": {
+          "label": "Color Scheme"
+        }
+      },
+      "presets": {
+        "name": "By Image Banner"
+      }
+    },
+
+    "product-grid": {
+      "name": "By Product Grid",
+      "settings": {
+        "title": {
+          "label": "Title"
+        }
+      },
+      "blocks": {
+        "type": "product",
+        "name": "Product",
+        "settings": {
+          "image": {
+            "label": "Product image",
+            "info": "Select an image for the product."
+          },
+          "product": {
+            "label": "Select product",
+            "info": "Choose a product from your store."
+          }
+        }
+      },
+      "presets": {
+        "name": "By Product Grid",
+        "category": "Products"
+      }
+    },
+
     "image-banner": {
       "name": "Image banner",
       "settings": {

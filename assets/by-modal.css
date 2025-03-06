@@ -1,0 +1,204 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 999;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 37px 20px 37px 17px;
+  max-width: 320px;
+  width: 100%;
+  display: none;
+  z-index: 1000;
+  overflow: scroll;
+  box-shadow: 0px 2px 4px 0px #00000033;
+}
+
+.modal .modal-close {
+  position: absolute;
+  top: 12.7px;
+  right: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.modal .modal-close svg {
+  width: 12px;
+  height: 12px;
+}
+
+.modal.active,
+.modal-overlay.active {
+  display: block;
+}
+
+.modal .modal-content {
+  display: flex;
+  gap: 8px;
+}
+
+.modal .modal-content .img-wrapper {
+  flex: 1 1 calc(50%);
+}
+
+.modal .modal-content .text-wrapper .title {
+  font-family: var(--primary-font);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 19.2px;
+  margin-top: 13px;
+  color: #000;
+}
+.modal .modal-content .text-wrapper .review-stars {
+  display: flex;
+  margin-top: 6.5px;
+}
+
+.modal .modal-content .text-wrapper .price {
+  font-family: var(--secondary-font);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19.2px;
+  margin-top: 13px;
+  color: #000;
+}
+.modal .modal-content .text-wrapper .description {
+  font-family: var(--primary-font);
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 13.2px;
+  margin-top: 13px;
+  color: #000;
+}
+
+.modal .variant-options {
+  display: flex;
+  flex-direction: column;
+  gap: 11.5px;
+}
+
+.modal .variant-options .variant-option {
+  display: flex;
+  flex-direction: column;
+  padding-left: 3px;
+  gap: 6px;
+}
+.modal .variant-options .variant-option label {
+  font-family: var(--primary-font);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18.2px;
+  color: #333333;
+}
+
+.modal .variant-options .variant-option.color-options .color-list {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.modal
+  .variant-options
+  .variant-option.color-options
+  .color-list
+  > *:nth-child(even) {
+  border-left: none;
+}
+
+.modal .variant-options .variant-option.color-options .color-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  padding: 11px 15px;
+  font-family: var(--primary-font);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 18px;
+  color: #000;
+  flex: 1 1 0%;
+  min-width: 0;
+  transition: all 0.3s ease 0s;
+  -webkit-transition: all 0.3s ease 0s;
+}
+
+.modal .variant-options .variant-option.color-options .color-item.active {
+  background: #000;
+  color: #fff;
+}
+
+.modal .variant-options .variant-option.color-options .color-item::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 100%;
+  background-color: var(--variant-color);
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
+  position: absolute;
+  left: 0;
+}
+
+.modal .variant-options .variant-option .dropdown-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal .variant-options .variant-option .dropdown-wrapper select {
+  appearance: none;
+  width: 100%;
+  padding: 10px 13px;
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  font-family: var(--primary-font);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  color: #000;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.modal .variant-options .variant-option .dropdown-wrapper::after {
+  content: "▼";
+  position: absolute;
+  right: 14px;
+  padding-left: 14px;
+  font-size: 15px;
+  pointer-events: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.5);
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.modal .warning-text {
+  font-family: var(--primary-font);
+  display: block;
+  text-align: left;
+  font-size: 14px;
+  color: #d32f2f;
+  font-weight: 500;
+  padding: 12px 0 0 4px;
+  height: 25px;
+}
+
+.modal .add-to-cart {
+  margin-top: 26px;
+  min-width: 100%;
+}
