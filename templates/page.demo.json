@@ -11,13 +11,98 @@
   "sections": {
     "main": {
       "type": "main-page",
+      "disabled": true,
       "settings": {
         "padding_top": 28,
         "padding_bottom": 28
       }
+    },
+    "by_image_banner_rGbERm": {
+      "type": "by-image-banner",
+      "settings": {
+        "header_logo": "shopify://shop_images/image-banner-logo.png",
+        "header_promotion_text": "Find the ideal gift for your loved ones.",
+        "header_cta_text": "Choose Gift",
+        "header_cta_link": "",
+        "title": "The Gift Guide",
+        "description": "<p>Discover Joy: Your Ultimate Holiday Gift Destination.</p><p>Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>",
+        "cta_text": "Shop Now",
+        "cta_link": "",
+        "footer_promotion_text": "<p>SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL</p>",
+        "color_scheme": "scheme-1",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0
+      }
+    },
+    "by_product_grid_XTDcU6": {
+      "type": "by-product-grid",
+      "blocks": {
+        "t_sections_product_grid_blocks_type_pdD6J8": {
+          "type": "t:sections.product-grid.blocks.type",
+          "settings": {
+            "image": "shopify://shop_images/black-bag-over-the-shoulder_925x_4cae5708-5e9e-4e7e-96ec-9649f0c20cd8.jpg",
+            "product": "black-leather-bag"
+          }
+        },
+        "t_sections_product_grid_blocks_type_H4DUGb": {
+          "type": "t:sections.product-grid.blocks.type",
+          "settings": {
+            "image": "shopify://shop_images/man-adjusts-blue-tuxedo-bowtie_925x_55a49e12-d54b-488e-b7a0-ea4c201eb01f.jpg",
+            "product": "blue-silk-tuxedo"
+          }
+        },
+        "t_sections_product_grid_blocks_type_F9tkg4": {
+          "type": "t:sections.product-grid.blocks.type",
+          "settings": {
+            "image": "shopify://shop_images/red-plaid-shirt_925x_70e9e5a8-8fc5-4d60-9a9a-cc2e0dd57cc9.jpg",
+            "product": "chequered-red-shirt"
+          }
+        },
+        "t_sections_product_grid_blocks_type_D6RkPd": {
+          "type": "t:sections.product-grid.blocks.type",
+          "settings": {
+            "image": "shopify://shop_images/leather-jacket-and-tea_925x_2490cde1-7e61-4151-9a65-de8a763bc701.jpg",
+            "product": "classic-leather-jacket"
+          }
+        },
+        "t_sections_product_grid_blocks_type_zDJHmR": {
+          "type": "t:sections.product-grid.blocks.type",
+          "settings": {
+            "image": "shopify://shop_images/casual-fashion-woman_925x_56b56608-f207-45c1-b677-bb5aa26c1c7a.jpg",
+            "product": "classic-varsity-top"
+          }
+        },
+        "t_sections_product_grid_blocks_type_7rKFjj": {
+          "type": "t:sections.product-grid.blocks.type",
+          "settings": {
+            "image": "shopify://shop_images/young-female-models-denim_925x_44c2cf9e-4030-4347-9d4a-f0e4a1479b4a.jpg",
+            "product": "dark-denim-top"
+          }
+        }
+      },
+      "block_order": [
+        "t_sections_product_grid_blocks_type_pdD6J8",
+        "t_sections_product_grid_blocks_type_H4DUGb",
+        "t_sections_product_grid_blocks_type_F9tkg4",
+        "t_sections_product_grid_blocks_type_D6RkPd",
+        "t_sections_product_grid_blocks_type_zDJHmR",
+        "t_sections_product_grid_blocks_type_7rKFjj"
+      ],
+      "settings": {
+        "title": "Tisso vison in the wild",
+        "color_scheme": "scheme-1",
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 0,
+        "padding_top_desktop": 90,
+        "padding_bottom_desktop": 0
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "by_image_banner_rGbERm",
+    "by_product_grid_XTDcU6"
   ]
 }
