@@ -2,6 +2,8 @@ Developed sections:
 - by-image-banner.liquid
 - by-product-grid.liquid
 
+Store pass: byavuz925
+
 Preview:
 https://baris-yavuz-48-teststore.myshopify.com/pages/contact?view=demo&preview_theme_id=134433964115
 
