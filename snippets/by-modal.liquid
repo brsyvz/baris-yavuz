@@ -1,0 +1,227 @@
+{% comment %} 
+ FEATURES:
+ - Supports N number of product option groups rather than only supporting size and color
+ - Displays warning message after ATC button click when an option is not selected
+ - Only displays available variants
+ - Updates price on variant change 
+{% endcomment %}
+
+{{ 'by-modal.css' | asset_url | preload_tag: as: 'style' }}
+{{ 'by-modal.css' | asset_url | stylesheet_tag }}
+
+<!-- Modal Overlay & Content -->
+<div class="modal-overlay" id="modalOverlay"></div>
+<div class="modal resetter" id="modal">
+  <button class="modal-close" id="modalClose">
+    {{- 'by-icon-close.svg' | inline_asset_content -}}
+  </button>
+
+  <div class="modal-content">
+    <div class="img-wrapper">
+      <img src="" loading="lazy" alt="">
+    </div>
+    <div class="text-wrapper">
+      <p class="title"></p>
+      <div class="review-stars">{{- 'by-icon-stars.svg' | inline_asset_content -}}</div>
+      <p class="price"></p>
+      <p class="description"></p>
+    </div>
+  </div>
+
+  <div class="variant-options"></div>
+  <div class="warning-text"></div>
+
+  {% render 'by-cta', text: "ADD TO CART", type:"button", link: link, classes: "primary,add-to-cart", title: "ADD TO CART" %}
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("modal");
+    const modalOverlay = document.getElementById("modalOverlay");
+    const modalClose = document.getElementById("modalClose");
+    const warningText = document.querySelector(".warning-text");
+    const addToCartBtn = document.querySelector(".add-to-cart");
+
+    let selectedOptions = {};
+    let selectedProduct = null;
+
+    const productData = {
+        {% for block in products_data %}
+        {% assign bs = block.settings %}
+        {% assign product = bs.product %}
+
+        "{{ product.id }}": {
+            id: "{{ product.id }}",
+            title: "{{ product.title }}",
+            price: "{{ product.price | money }}",
+            description: "{{ product.description | strip_newlines | strip_html }}",
+            image: "{{ product.featured_image | image_url: width: 120, height: 140 }}",
+            options: [
+                {% for option in product.options_with_values %}
+                {
+                    name: "{{ option.name }}",
+                    values: [{% for value in option.values %}"{{ value }}"{% unless forloop.last %}, {% endunless %}{% endfor %}]
+                }{% unless forloop.last %}, {% endunless %}
+                {% endfor %}
+            ],
+            variants: [
+                {% for variant in product.variants %}
+                {% if variant.available %}
+                {
+                    id: "{{ variant.id }}",
+                    price: "{{ variant.price | money }}",
+                    available: {{ variant.available | json }},
+                    options: [{% for option in variant.options %}"{{ option }}"{% unless forloop.last %}, {% endunless %}{% endfor %}]
+                }{% unless forloop.last %}, {% endunless %}
+                {% endif %}
+                {% endfor %}
+            ]
+        }{% unless forloop.last %}, {% endunless %}
+        {% endfor %}
+    };
+
+    /** Modal Toggle */
+    function handleModalToggleButtons() {
+        document.querySelectorAll(".modal-toggle").forEach(btn => {
+            btn.addEventListener("click", () => {
+                toggleModal(btn.dataset.productId);
+            });
+        });
+    }
+
+    function toggleModal(id) {
+        if (!productData.hasOwnProperty(id)) return;
+        modal.classList.add("active");
+        modalOverlay.classList.add("active");
+        updateModal(productData[id]);
+    }
+
+    /** Update Modal Content */
+    function updateModal(product) {
+        modal.querySelector(".img-wrapper img").src = product.image;
+        modal.querySelector(".img-wrapper img").alt = product.title;
+        modal.querySelector(".text-wrapper .title").textContent = product.title;
+        modal.querySelector(".text-wrapper .price").textContent = product.price;
+        modal.querySelector(".text-wrapper .description").textContent = product.description;
+
+        resetModalData(product);
+        document.querySelector(".variant-options").innerHTML = renderVariants(product.options);
+        setupVariantListeners();
+    }
+
+    function resetModalData(product) {
+        selectedOptions = {};
+        selectedProduct = product;
+        document.querySelector(".variant-options").innerHTML = "";
+        warningText.textContent = "";
+    }
+
+    /** Render Variant Options */
+    function renderVariants(options) {
+        return options.map(option => {
+            if (option.name.toLowerCase() === "color") {
+                return `
+                    <div class="variant-option color-options">
+                        <label>${option.name}</label>
+                        <ul class="color-list">
+                            ${option.values.map(value => `
+                                <li class="color-item" data-value="${value}" title="${value}" style="--variant-color: ${value.toLowerCase()};">${value}</li>
+                            `).join("")}
+                        </ul>
+                    </div>`;
+            } else {
+                return `
+                    <div class="variant-option">
+                        <label>${option.name}</label>
+                        <div class="dropdown-wrapper">
+                            <select class="dropdown" name="options[${option.name}]">
+                                <option selected disabled>Choose your ${option.name}</option>
+                                ${option.values.map(value => `<option value="${value}">${value}</option>`).join("")}
+                            </select>
+                        </div>
+                    </div>`;
+            }
+        }).join("");
+    }
+
+    /** Handle Variant Selection */
+    function setupVariantListeners() {
+        document.querySelector(".variant-options").addEventListener("change", function (e) {
+            if (e.target.tagName === "SELECT") {
+                selectedOptions[e.target.closest(".variant-option").querySelector("label").textContent] = e.target.value;
+                updateSelectedVariant();
+            }
+        });
+
+        document.querySelector(".variant-options").addEventListener("click", function (e) {
+            if (e.target.classList.contains("color-item")) {
+                const colorList = e.target.closest(".color-list");
+                colorList.querySelectorAll(".color-item").forEach(item => item.classList.remove("active"));
+                e.target.classList.add("active");
+
+                selectedOptions[colorList.closest(".color-options").querySelector("label").textContent] = e.target.dataset.value;
+                updateSelectedVariant();
+            }
+        });
+    }
+
+    /** Update Selected Variant */
+    function updateSelectedVariant() {
+        const variantId = findSelectedVariantId(selectedOptions, selectedProduct);
+        if (variantId) {
+            warningText.textContent = "";
+            const selectedVariant = selectedProduct.variants.find(variant => variant.id === variantId);
+            if (selectedVariant) {
+                document.querySelector(".text-wrapper .price").textContent = selectedVariant.price;
+            }
+        }
+    }
+
+    /** Add to Cart Functionality */
+    function handleAddToCart() {
+        addToCartBtn.addEventListener("click", function () {
+            const variantId = findSelectedVariantId(selectedOptions, selectedProduct);
+            if (!variantId) {
+                warningText.textContent = `Please select: ${getMissingOptions(selectedProduct, selectedOptions).join(", ")}`;
+                return;
+            }
+
+            let formData = { 'items': [{ 'id': variantId, 'quantity': 1 }] };
+
+            if (selectedOptions["Color"] === "Black" && selectedOptions["Size"] === "M") {
+                formData.items.push({ id: "42538244833363", quantity: 1 });
+            }
+
+            fetch(window.Shopify.routes.root + 'cart/add.js', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .catch(error => console.error('Error:', error));
+        });
+    }
+
+    /** Helpers */
+    function findSelectedVariantId(selectedOptions, selectedProduct) {
+        return selectedProduct.variants.find(variant =>
+            variant.options.every((option, index) => selectedOptions[selectedProduct.options[index].name] === option)
+        )?.id || null;
+    }
+
+    function getMissingOptions(product, selectedOptions) {
+        return product.options.map(option => option.name).filter(optionName => !selectedOptions[optionName]);
+    }
+
+    function closeModal() {
+        modal.classList.remove("active");
+        modalOverlay.classList.remove("active");
+    }
+
+    modalClose.addEventListener("click", closeModal);
+    modalOverlay.addEventListener("click", closeModal);
+
+    handleModalToggleButtons();
+    handleAddToCart();
+});
+</script>
